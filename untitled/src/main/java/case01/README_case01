@@ -1,0 +1,19 @@
+In this file you will find details about how I implemented the first task_case01
+
+This case verifies if users with different roles can log in.
+BaseTest: it starts the browser. I have selected @BeforeMethod because each role has its own permissions and each role must be logged in separately
+(not in one session).
+
+LoginTest verifies such things:
+1. Admin role has specific elements: users item in the left menu and this role also has refresh item in the upper left corner
+In test for this role I have verified if both elements (described above) are displayed and to prove that user logged it successfully - the dashboard page should be opened.
+**Admin role has users item in the left menu and refresh item in the upper left corner**
+2. Subscriber role - very very simple role: there are no particular characteristics that would set this role apart. There are only 2 items in the left menu that are available for all other roles.
+so I have decided that if this role does NOT have items for other roles that meant - that it is this role.
+**Subscriber - has NO Posts, NO Media, NO users **
+3. Contributor role - has Posts, NO Media , NO users, NO pages
+4. Author role - has Posts, has Media , NO users, NO pages
+5. Editor role - has Posts, has Media , NO users, has pages
+
+Also I have added listeners, added priority for login tests.
+
