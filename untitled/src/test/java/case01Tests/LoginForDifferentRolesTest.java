@@ -8,7 +8,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Listeners(ListenerTest.class)
-public class LoginTest extends BaseTest {
+public class LoginForDifferentRolesTest extends BaseTest {
     protected final String baseUrl = "https://dev-wordpress-fcdbgyfxfuetftf5.westus2-01.azurewebsites.net/wp-admin";
 
     @Test(priority = 1)

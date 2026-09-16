@@ -39,9 +39,9 @@ public class BaseTest {
     }
 
     driver.manage().window().maximize();
-    driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
-    driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(10));
-    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
+    driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(15));
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
 
     System.out.println("✅ Browser started: " + browser);
   }
