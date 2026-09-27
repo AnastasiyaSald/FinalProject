@@ -7,13 +7,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 public class DashboardPage03 extends BasePage03 {
-    public DashboardPage03() {
-        super();
+    private static DashboardPage03 instance;
+
+    private DashboardPage03(WebDriver driver) {
+        super(driver);
+        PageFactory.initElements(driver, this);
+    }
+    public static DashboardPage03 getInstance(WebDriver driver) {
+        if (instance == null) {
+            instance = new DashboardPage03(driver);
+        }
+        return instance;
     }
 
     @FindBy(xpath = "//ul[@id='adminmenu']//div[@class='wp-menu-name' and contains(text(), 'Pages')]")
