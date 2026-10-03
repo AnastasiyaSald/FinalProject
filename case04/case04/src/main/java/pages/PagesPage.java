@@ -3,9 +3,12 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import webdriver.Browser;
 
 import java.time.Duration;
 
@@ -47,6 +50,11 @@ public class PagesPage extends BasePage {
     private static final By titleEnteredInTheTableLocator = By.xpath(
             "//table[@class='wp-list-table widefat fixed striped table-view-list pages']//tbody[@id='the-list']//a[@class='row-title' and contains(text(), 'Nastya') and contains(text(), 'Title')]");
 
+    private static final By bulkActionsDropdownLocator = By.xpath("//div[@class='tablenav top']//select[@id='bulk-action-selector-top']");
+
+    private static final By applyButtonLocator = By.xpath("//input[@class='button action' and contains(@id, 'doaction')]");
+    private static final By statusDropdownLocator = By.xpath("//div[@class='inline-edit-col']//div[@class='inline-edit-group wp-clearfix']//select[@name='_status' and .//option[contains(text(), '— No Change —')]]");
+    private static final By updateButtonLocator = By.xpath("//div[@class='submit inline-edit-save']//input[@id='bulk_edit']");
 
     public void clickOnAddNewPageButton() {
         findVisibleElement(addNewPageButtonLocator).click();
@@ -127,7 +135,57 @@ public class PagesPage extends BasePage {
         By dynamicLocator = getTitleInTableLocator(expectedTitle);
         WebElement titleClickableRow = findVisibleElement(dynamicLocator);
         titleClickableRow.click();
+    }
+
+    private By getCheckboxNearCreatedPageLocator(String expectedTitle) {
+        String xpathExpression = String.format(
+                "//tr[.//span[@class='screen-reader-text' and contains(text(), '%s')]]//input[@type='checkbox']",
+                expectedTitle);
+        return By.xpath(xpathExpression);
+    }
+
+    public void clickCheckboxNearCreatedPage (String expectedTitle) {
+       By dynamicCheckBoxLocator = getCheckboxNearCreatedPageLocator(expectedTitle);
+       WebElement checkboxIsFound = findVisibleElement(dynamicCheckBoxLocator);
+       checkboxIsFound.click();
+    }
+
+    public void selectEditFromDropdown() {
+        WebElement dropdownElement = findVisibleElement(bulkActionsDropdownLocator);
+        Select dropdown = new Select(dropdownElement);
+        dropdown.selectByVisibleText("Edit");
 
     }
+
+    public void clickOnApplyButton(){
+        WebElement applyButton = findVisibleElement(applyButtonLocator);
+        applyButton.click();
+    }
+
+    public void selectDraftOptionInTheDropdown(){
+        WebElement dropdownElement = findVisibleElement(statusDropdownLocator);
+        Select dropdown = new Select(dropdownElement);
+        dropdown.selectByVisibleText("Draft");
+    }
+
+    public void clickUpdateButton(){
+        findVisibleElement(updateButtonLocator).click();
+    }
+
+    private By updatedTitleInTableWithDraftWordLocator(String expectedTitle) {
+        String xpathExpression = String.format(
+                "//tr[.//a[@class='row-title' and contains(text(), '%s')] and .//span[@class='post-state' and contains(text(), 'Draft')]]",
+                expectedTitle
+        );
+        return By.xpath(xpathExpression);
+    }
+
+    public void verifyPageStatusIsDraft(String expectedTitle) {
+        By draftPageLocator = updatedTitleInTableWithDraftWordLocator(expectedTitle);
+        boolean isDraftDisplayed = findVisibleElement(draftPageLocator).isDisplayed();
+        Assert.assertTrue(isDraftDisplayed,"Страница '" + expectedTitle + "' со статусом 'Draft' не найдена в таблице!");
+    }
+
+
 
 }

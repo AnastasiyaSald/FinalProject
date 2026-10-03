@@ -29,10 +29,24 @@ public class PageTest extends BaseTest {
         }
 
         @Test(dependsOnMethods = "testCreateNewWordPressPageInDraft")
-        public void publishDraftPage (){
+        public void publishDraftPage () {
             PagesPage pagesPage = new PagesPage();
-            pagesPage.clickOnTheDraftPageItemInTheTable("Nastya Title Page");
+            String pageTitle = "Nastya Title Page";
+            pagesPage.clickOnTheDraftPageItemInTheTable(pageTitle);
+            pagesPage.clickPublishButtonTwice();
+            pagesPage.returnBackToPagesPage();
+        }
 
+        @Test(dependsOnMethods = "publishDraftPage")
+    public void makePublishedPageToBeDraft () throws InterruptedException {
+            PagesPage pagesPage = new PagesPage();
+            String pageTitle = "Nastya Title Page";
+            pagesPage.clickCheckboxNearCreatedPage(pageTitle);
+            pagesPage.selectEditFromDropdown();
+            pagesPage.clickOnApplyButton();
+            pagesPage.selectDraftOptionInTheDropdown();
+            pagesPage.clickUpdateButton();
+            pagesPage.verifyPageStatusIsDraft(pageTitle);
         }
 
 }
